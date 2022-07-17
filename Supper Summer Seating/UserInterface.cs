@@ -45,11 +45,19 @@ namespace Supper_Summer_Seating
                         int total = numList.Sum();
 
                         int numRows = FillRows.NumRowsNeeded(total);
-                        List<KeyValuePair<int, int>> sortedList = FillRows.SortRows(numRows + 100, numList);
+                        List<KeyValuePair<int, int>> left = FillRows.SortRows(numRows, numList, out List<KeyValuePair<int, int>> middle, out List<KeyValuePair<int, int>> right);
 
-                        foreach (KeyValuePair<int, int> key in sortedList)
+                        foreach (KeyValuePair<int, int> key in left)
                         {
-                            uxTextBox.Text += key.Key.ToString() + "\r\n";
+                            uxLeftBox.Text += key.Key.ToString() + "\r\n";
+                        }
+                        foreach (KeyValuePair<int, int> key in middle)
+                        {
+                            uxMiddleBox.Text += key.Key.ToString() + "\r\n";
+                        }
+                        foreach (KeyValuePair<int, int> key in right)
+                        {
+                            uxRightBox.Text += key.Key.ToString() + "\r\n";
                         }
                     }
                 }

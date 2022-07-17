@@ -29,11 +29,11 @@ namespace Supper_Summer_Seating
             return numRows + 1;
         }
 
-        public static List<KeyValuePair<int, int>> SortRows(int numRows, List<int> numList)
+        public static List<KeyValuePair<int, int>> SortRows(int numRows, List<int> numList, out List<KeyValuePair<int, int>> middleRow, out List<KeyValuePair<int, int>> rightRow)
         {
             List<KeyValuePair<int, int>> leftRow = new List<KeyValuePair<int, int>>();
-            List<KeyValuePair<int, int>> middleRow = new List<KeyValuePair<int, int>>();
-            List<KeyValuePair<int, int>> rightRow = new List<KeyValuePair<int, int>>();
+            middleRow = new List<KeyValuePair<int, int>>();
+            rightRow = new List<KeyValuePair<int, int>>();
 
             List<KeyValuePair<int, int>> sideList = new List<KeyValuePair<int, int>>();
             List<KeyValuePair<int, int>> middleList = new List<KeyValuePair<int, int>>();
@@ -79,17 +79,15 @@ namespace Supper_Summer_Seating
 
                 if (m.Value <= s.Value)
                 {
-                    if (midCurrent + m.Key < middleTotal)
+                    if (midCurrent + m.Key <= middleTotal)
                     {
                         middleRow.Add(m);
                         midCurrent += m.Key + m.Value;
                         middleList.Remove(middleList.First(item => item.Key.Equals(m.Key)));
                         sideList.Remove(sideList.First(item => item.Key.Equals(m.Key)));
                     }
-                }
-                else
-                {
-                    if (leftCurrent + s.Key < sideTotal)
+
+                    else if (leftCurrent + s.Key <= sideTotal)
                     {
                         leftRow.Add(s);
                         leftCurrent += s.Key + s.Value;
@@ -97,22 +95,57 @@ namespace Supper_Summer_Seating
                         sideList.Remove(sideList.First(item => item.Key.Equals(s.Key)));
                     }
 
-                    else
+                    else if (rightCurrent + s.Key <= sideTotal)
                     {
                         rightRow.Add(s);
                         rightCurrent += s.Key + s.Value;
                         middleList.Remove(middleList.First(item => item.Key.Equals(s.Key)));
                         sideList.Remove(sideList.First(item => item.Key.Equals(s.Key)));
                     }
+
+                    else
+                    {
+                        middleRow.Add(s);
+                        midCurrent += s.Key + s.Value;
+                        middleList.Remove(middleList.First(item => item.Key.Equals(s.Key)));
+                        sideList.Remove(sideList.First(item => item.Key.Equals(s.Key)));
+                    }
+
                 }
-                if (rightCurrent > sideTotal)
+                else
                 {
-                    throw new Exception();
+                    if (leftCurrent + s.Key <= sideTotal)
+                    {
+                        leftRow.Add(s);
+                        leftCurrent += s.Key + s.Value;
+                        middleList.Remove(middleList.First(item => item.Key.Equals(s.Key)));
+                        sideList.Remove(sideList.First(item => item.Key.Equals(s.Key)));
+                    }
+
+                    else if (rightCurrent + s.Key <= sideTotal)
+                    {
+                        rightRow.Add(s);
+                        rightCurrent += s.Key + s.Value;
+                        middleList.Remove(middleList.First(item => item.Key.Equals(s.Key)));
+                        sideList.Remove(sideList.First(item => item.Key.Equals(s.Key)));
+                    }
+
+                    else
+                    {
+                        middleRow.Add(s);
+                        midCurrent += s.Key + s.Value;
+                        middleList.Remove(middleList.First(item => item.Key.Equals(s.Key)));
+                        sideList.Remove(sideList.First(item => item.Key.Equals(s.Key)));
+                    }
+                }
+                if (midCurrent > middleTotal)
+                {
+                    SortRows(numRows + 1, numList, out middleRow, out rightRow);
                 }
             }
 
             //Needs to be all rows
-            return middleRow;
+            return leftRow;
         }
     }
 }
