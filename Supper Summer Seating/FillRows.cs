@@ -29,43 +29,90 @@ namespace Supper_Summer_Seating
             return numRows + 1;
         }
 
-        public static List<int> SortRows(int numRows, List<int> numList)
+        public static List<KeyValuePair<int, int>> SortRows(int numRows, List<int> numList)
         {
-            List<int> leftRow = new List<int>();
-            List<int> middleRow = new List<int>();
-            List<int> rightRow = new List<int>();
+            List<KeyValuePair<int, int>> leftRow = new List<KeyValuePair<int, int>>();
+            List<KeyValuePair<int, int>> middleRow = new List<KeyValuePair<int, int>>();
+            List<KeyValuePair<int, int>> rightRow = new List<KeyValuePair<int, int>>();
+
+            List<KeyValuePair<int, int>> sideList = new List<KeyValuePair<int, int>>();
+            List<KeyValuePair<int, int>> middleList = new List<KeyValuePair<int, int>>();
 
             int middleTotal = numRows * _numMiddleChairs;
             int sideTotal = numRows * _numSideChairs;
 
+            int midCurrent = 0;
+            int leftCurrent = 0;
+            int rightCurrent = 0;
+            
             foreach (int group in numList)
             {
-                int side = group % _numSideChairs;
-                int middle = group % _numMiddleChairs;
+                int x = group;
+                int y = group;
 
-                if (middle <= side)
+                while (x > 0)
                 {
-                    if (middleRow.Sum() < middleTotal + group)
+                    x -= _numSideChairs;
+                }
+                x += _numSideChairs;
+
+                while (y > 0)
+                {
+                    y -= _numMiddleChairs;
+                }
+                y += _numMiddleChairs;
+
+                int side = _numSideChairs - x;
+                int middle = _numMiddleChairs - y;
+
+                sideList.Add(new KeyValuePair<int, int>(group, side));
+                middleList.Add(new KeyValuePair<int,int>(group, middle)); 
+            }
+
+            sideList.OrderBy(x => x.Key);
+            middleList.OrderBy(x => x.Key);
+            
+            while (sideList.Count > 0)
+            {
+                KeyValuePair<int, int> s = sideList.Last();
+                KeyValuePair<int, int> m = middleList.Last();
+
+                if (m.Value <= s.Value)
+                {
+                    if (midCurrent + m.Key < middleTotal)
                     {
-                        middleRow.Add(group);
+                        middleRow.Add(m);
+                        midCurrent += m.Key + m.Value;
+                        middleList.Remove(middleList.First(item => item.Key.Equals(m.Key)));
+                        sideList.Remove(sideList.First(item => item.Key.Equals(m.Key)));
                     }
                 }
                 else
                 {
-                    if (leftRow.Sum() < sideTotal + group)
+                    if (leftCurrent + s.Key < sideTotal)
                     {
-                        leftRow.Add(group);
+                        leftRow.Add(s);
+                        leftCurrent += s.Key + s.Value;
+                        middleList.Remove(middleList.First(item => item.Key.Equals(s.Key)));
+                        sideList.Remove(sideList.First(item => item.Key.Equals(s.Key)));
                     }
+
                     else
                     {
-                        rightRow.Add(group);
+                        rightRow.Add(s);
+                        rightCurrent += s.Key + s.Value;
+                        middleList.Remove(middleList.First(item => item.Key.Equals(s.Key)));
+                        sideList.Remove(sideList.First(item => item.Key.Equals(s.Key)));
                     }
                 }
-                if (rightRow.Sum() > sideTotal)
+                if (rightCurrent > sideTotal)
                 {
-
+                    throw new Exception();
                 }
             }
+
+            //Needs to be all rows
+            return middleRow;
         }
     }
 }

@@ -45,14 +45,19 @@ namespace Supper_Summer_Seating
                         int total = numList.Sum();
 
                         int numRows = FillRows.NumRowsNeeded(total);
-                        List<int> sortedList = FillRows.SortRows(numRows, numList);
-                    }
+                        List<KeyValuePair<int, int>> sortedList = FillRows.SortRows(numRows + 100, numList);
 
+                        foreach (KeyValuePair<int, int> key in sortedList)
+                        {
+                            uxTextBox.Text += key.Key.ToString() + "\r\n";
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.ToString());
                 }
             }
+        }
     }
 }

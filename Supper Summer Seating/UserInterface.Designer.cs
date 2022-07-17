@@ -32,6 +32,7 @@
             this.uxFile = new System.Windows.Forms.ToolStripMenuItem();
             this.uxOpen = new System.Windows.Forms.ToolStripMenuItem();
             this.uxOpenDialog = new System.Windows.Forms.OpenFileDialog();
+            this.uxTextBox = new System.Windows.Forms.TextBox();
             this.uxMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -66,11 +67,20 @@
             // 
             this.uxOpenDialog.FileName = "openFileDialog1";
             // 
+            // uxTextBox
+            // 
+            this.uxTextBox.Location = new System.Drawing.Point(12, 70);
+            this.uxTextBox.Multiline = true;
+            this.uxTextBox.Name = "uxTextBox";
+            this.uxTextBox.Size = new System.Drawing.Size(471, 736);
+            this.uxTextBox.TabIndex = 1;
+            // 
             // UserInterface
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1487, 889);
+            this.Controls.Add(this.uxTextBox);
             this.Controls.Add(this.uxMenuStrip);
             this.MainMenuStrip = this.uxMenuStrip;
             this.Name = "UserInterface";
@@ -88,6 +98,7 @@
         private System.Windows.Forms.ToolStripMenuItem uxFile;
         private System.Windows.Forms.ToolStripMenuItem uxOpen;
         private System.Windows.Forms.OpenFileDialog uxOpenDialog;
+        private System.Windows.Forms.TextBox uxTextBox;
     }
 }
 
