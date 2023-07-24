@@ -1,6 +1,6 @@
 # Supper-Summer-Seating
-Seating for Super Summer
-Middle = 14 chairs
+Seating for Super Summer \n
+Middle = 14 chairs /n
 Sides = 6 chairs
 
 Create a .txt file with the numbers for the group sizes split onto individual lines.
