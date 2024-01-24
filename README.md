@@ -1,4 +1,4 @@
-# Supper-Summer-Seating
+# Super-Summer-Seating
 Seating for Super Summer  
 Middle = 14 chairs  
 Sides = 6 chairs  
