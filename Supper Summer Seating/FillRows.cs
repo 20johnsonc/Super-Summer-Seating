@@ -29,7 +29,7 @@ namespace Supper_Summer_Seating
             return numRows + 1;
         }
 
-        public static List<KeyValuePair<int, int>> SortRows(int numRows, List<int> numList, out List<KeyValuePair<int, int>> middleRow, out List<KeyValuePair<int, int>> rightRow)
+        public static List<KeyValuePair<int, int>> SortRows(int numRows, List<int> numList, out List<KeyValuePair<int, int>> middleRow, out List<KeyValuePair<int, int>> rightRow, out int midRows, out int leftRows, out int rightRows)
         {
             List<KeyValuePair<int, int>> leftRow = new List<KeyValuePair<int, int>>();
             middleRow = new List<KeyValuePair<int, int>>();
@@ -44,7 +44,11 @@ namespace Supper_Summer_Seating
             int midCurrent = 0;
             int leftCurrent = 0;
             int rightCurrent = 0;
-            
+
+            midRows = 0;
+            leftRows = 0;
+            rightRows = 0;
+
             foreach (int group in numList)
             {
                 int x = group;
@@ -66,12 +70,12 @@ namespace Supper_Summer_Seating
                 int middle = _numMiddleChairs - y;
 
                 sideList.Add(new KeyValuePair<int, int>(group, side));
-                middleList.Add(new KeyValuePair<int,int>(group, middle)); 
+                middleList.Add(new KeyValuePair<int, int>(group, middle));
             }
 
             sideList.OrderBy(x => x.Key);
             middleList.OrderBy(x => x.Key);
-            
+
             while (sideList.Count > 0)
             {
                 KeyValuePair<int, int> s = sideList.Last();
@@ -82,6 +86,7 @@ namespace Supper_Summer_Seating
                     if (midCurrent + m.Key <= middleTotal)
                     {
                         middleRow.Add(m);
+                        midRows += (m.Key + _numMiddleChairs - 1) / _numMiddleChairs;
                         midCurrent += m.Key + m.Value;
                         middleList.Remove(middleList.First(item => item.Key.Equals(m.Key)));
                         sideList.Remove(sideList.First(item => item.Key.Equals(m.Key)));
@@ -90,6 +95,7 @@ namespace Supper_Summer_Seating
                     else if (leftCurrent + s.Key <= sideTotal)
                     {
                         leftRow.Add(s);
+                        leftRows += (s.Key + _numSideChairs - 1) / _numSideChairs;
                         leftCurrent += s.Key + s.Value;
                         middleList.Remove(middleList.First(item => item.Key.Equals(s.Key)));
                         sideList.Remove(sideList.First(item => item.Key.Equals(s.Key)));
@@ -98,6 +104,7 @@ namespace Supper_Summer_Seating
                     else if (rightCurrent + s.Key <= sideTotal)
                     {
                         rightRow.Add(s);
+                        rightRows += (s.Key + _numSideChairs - 1) / _numSideChairs;
                         rightCurrent += s.Key + s.Value;
                         middleList.Remove(middleList.First(item => item.Key.Equals(s.Key)));
                         sideList.Remove(sideList.First(item => item.Key.Equals(s.Key)));
@@ -106,6 +113,7 @@ namespace Supper_Summer_Seating
                     else
                     {
                         middleRow.Add(s);
+                        midRows += (m.Key + _numMiddleChairs - 1) / _numMiddleChairs;
                         midCurrent += s.Key + s.Value;
                         middleList.Remove(middleList.First(item => item.Key.Equals(s.Key)));
                         sideList.Remove(sideList.First(item => item.Key.Equals(s.Key)));
@@ -117,6 +125,7 @@ namespace Supper_Summer_Seating
                     if (leftCurrent + s.Key <= sideTotal)
                     {
                         leftRow.Add(s);
+                        leftRows += (s.Key + _numSideChairs - 1) / _numSideChairs;
                         leftCurrent += s.Key + s.Value;
                         middleList.Remove(middleList.First(item => item.Key.Equals(s.Key)));
                         sideList.Remove(sideList.First(item => item.Key.Equals(s.Key)));
@@ -125,6 +134,7 @@ namespace Supper_Summer_Seating
                     else if (rightCurrent + s.Key <= sideTotal)
                     {
                         rightRow.Add(s);
+                        rightRows += (s.Key + _numSideChairs - 1) / _numSideChairs;
                         rightCurrent += s.Key + s.Value;
                         middleList.Remove(middleList.First(item => item.Key.Equals(s.Key)));
                         sideList.Remove(sideList.First(item => item.Key.Equals(s.Key)));
@@ -133,6 +143,7 @@ namespace Supper_Summer_Seating
                     else
                     {
                         middleRow.Add(s);
+                        midRows += (m.Key + _numMiddleChairs - 1) / _numMiddleChairs;
                         midCurrent += s.Key + s.Value;
                         middleList.Remove(middleList.First(item => item.Key.Equals(s.Key)));
                         sideList.Remove(sideList.First(item => item.Key.Equals(s.Key)));
@@ -140,7 +151,7 @@ namespace Supper_Summer_Seating
                 }
                 if (midCurrent > middleTotal)
                 {
-                    SortRows(numRows + 1, numList, out middleRow, out rightRow);
+                    SortRows(numRows + 1, numList, out middleRow, out rightRow, out midRows, out leftRows, out rightRows);
                 }
             }
 

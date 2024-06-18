@@ -43,9 +43,16 @@ namespace Supper_Summer_Seating
                         numList.Sort();
                         numList.Reverse();
                         int total = numList.Sum();
+                        int midRows = 0;
+                        int leftRows = 0;
+                        int rightRows = 0;
+
+                        uxLeftBox.Clear();
+                        uxMiddleBox.Clear();
+                        uxRightBox.Clear();
 
                         int numRows = FillRows.NumRowsNeeded(total);
-                        List<KeyValuePair<int, int>> left = FillRows.SortRows(numRows, numList, out List<KeyValuePair<int, int>> middle, out List<KeyValuePair<int, int>> right);
+                        List<KeyValuePair<int, int>> left = FillRows.SortRows(numRows, numList, out List<KeyValuePair<int, int>> middle, out List<KeyValuePair<int, int>> right, out midRows, out leftRows, out rightRows);
 
                         foreach (KeyValuePair<int, int> key in left)
                         {
@@ -59,6 +66,11 @@ namespace Supper_Summer_Seating
                         {
                             uxRightBox.Text += key.Key.ToString() + "\r\n";
                         }
+
+                        // Display row counts
+                        uxLeftRowCount.Text = "Left Rows: " + leftRows;
+                        uxMiddleRowCount.Text = "Middle Rows: " + midRows;
+                        uxRightRowCount.Text = "Right Rows: " + rightRows;
                     }
                 }
                 catch (Exception ex)
